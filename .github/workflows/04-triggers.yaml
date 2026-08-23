@@ -1,0 +1,21 @@
+name: triggers
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "feat/*"
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - "03-core-features/filters/included-file.md"
+      - "!03-core-features/filters/excluded-file.txt"
+
+jobs:
+  trigger-job:
+    runs-on: ubuntu-22.04
+    steps:
+      - run: echo "Trigger run"
