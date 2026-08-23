@@ -1,0 +1,31 @@
+name: Passing Data
+
+on:
+  workflow_dispatch:
+
+jobs:
+  producer:
+    runs-on: ubuntu-22.04
+    outputs:
+      foo: ${{steps.generated-foo.outputs.foo}}
+    steps:
+      - name: generate and export foo
+        id: generated-foo
+        run: |
+          foo=bar  # setting up variable
+          echo "FOO=${foo}" >> "$GITHUB_ENV" # CAN BE ACCESSED INSIDE THE JOB
+          echo "foo=${foo}" >> "$GITHUB_OUTPUT" # CAN BE ACCESSED INSIDE THE JOB
+
+      - name: inspect inside producer
+        run: |
+          echo "FOO (env): $FOO"
+          echo "foo (outputs): ${{steps.generated-foo.outputs.foo}}"
+
+  consumer:
+    runs-on: ubuntu-22.04
+    needs: producer
+    steps:
+      - name: value from producer
+        run: |
+          echo "FOO in consumer:            ${FOO:-<UNSET>}" # unset env
+          echo "foo in producer:            ${{needs.producer.outputs.foo}}
