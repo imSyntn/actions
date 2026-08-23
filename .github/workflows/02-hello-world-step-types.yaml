@@ -1,0 +1,23 @@
+name: Hello World Step types
+
+on:
+  workflow_dispatch:
+
+jobs:
+  say-hello-bash:
+    runs-on: ubuntu-22.04
+    steps:
+      - run: echo "Hello world bash"
+
+  say-hello-python:
+    runs-on: ubuntu-22.04
+    steps:
+      - run: print("Hello World python")
+        shell: python
+
+  say-hello-js:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: jairogomz/hello-world-javascript-action-by-jairo@v1.0.1
+        with:
+          who-to-greet: "World JS"
